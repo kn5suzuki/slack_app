@@ -1,6 +1,7 @@
-# Slack 自動集計 BOT
+# Slack 自動化 アプリ
 
-created by kn5suzuki
+GUI で Slack の作業を自動化できるアプリ
+実行ファイルにして人に配布することも可能
 
 ## 環境構築
 
