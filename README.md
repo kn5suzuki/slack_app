@@ -1,7 +1,13 @@
 # Slack 自動化 アプリ
 
 GUI で Slack の作業を自動化できるアプリ
+
 実行ファイルにして人に配布することも可能
+
+## 動作確認環境
+
+- MacOS 13.3.1(a)
+- Windows11（pyinstaller は pyenv-win のパスの影響で動作しない）
 
 ## 環境構築
 
