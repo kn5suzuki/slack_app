@@ -1,0 +1,20 @@
+{
+"python.languageServer": "Pylance",
+"python.defaultInterpreterPath": "~/.pyenv/shims/python3",
+"cSpell.words": [
+  "boxlayout",
+  "dotenv",
+  "kivy",
+  "pipenv",
+  "pyenv",
+  "pyinstaller",
+  "screenmanager"
+],
+"python.formatting.provider": "none",
+"github.copilot.enable": {
+  "*": true,
+  "plaintext": false,
+  "markdown": false,
+  "scminput": false
+}
+}

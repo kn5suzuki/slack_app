@@ -1,0 +1,6 @@
+slack_sdk
+python-dotenv
+Kivy == 2.2.0rc1
+# japanize_kivy
+# pip3 install japanize_kivy --upgrade --pre
+pyinstaller

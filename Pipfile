@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+slack-sdk = "*"
+python-dotenv = "*"
+kivy = "==2.2.0rc1"
+japanize_kivy = "0.1.1"
+pyinstaller = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"
