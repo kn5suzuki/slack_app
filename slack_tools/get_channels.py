@@ -17,6 +17,11 @@ def get_private_channels(client):
 def get_all_channels(client):
     return get_private_channels(client)+get_public_channels(client)
 
+def get_active_sorted_channels(client):
+    channels = get_all_channels(client)
+    active_channels = [channel for channel in channels if not channel['is_archived']]
+    active_channels.sort(key=lambda x: x['name'])
+    return active_channels
 
 def create_channel_list(CHANNELS_LIST: list):
     channel_list = []
@@ -41,5 +46,6 @@ if __name__ == "__main__":
     SLACK_API_TOKEN = os.getenv('UserOAuthToken')
     client = WebClient(token=SLACK_API_TOKEN)
 
-    PRIVATE_LIST = get_all_channels(client)
-    print(create_channel_list(PRIVATE_LIST))
+    channel_list = get_active_sorted_channels(client)
+    print(create_channel_list(channel_list))
+    # print(channel_list)

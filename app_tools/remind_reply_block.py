@@ -7,7 +7,8 @@ from kivy.graphics import Rectangle, Color
 import threading
 
 from slack_tools import create_channel_dict, get_channel_members, get_conversations_list, create_members_dict, send_response
-from widgets import MyDropdown, TextScrollView, WidgetScrollView, SelectAndActionField, InputField
+from app_tools.widgets import MyDropdown, TextScrollView, WidgetScrollView, InputField, SelectAndActionField
+
 
 class ConversationElement(BoxLayout):
     def __init__(self, client, member_dict, channel_id, channel_members, text, ts, reactors) -> None:
@@ -28,7 +29,7 @@ class ConversationElement(BoxLayout):
         self.reactors = reactors
         self.add_widget(Label(text=self.extract_text(self.text)))
         self.add_widget(
-            Label(text=f'リアクション:{len(self.reactors)}/{len(self.channel_members)}'))
+            Label(text=f'返信:{len(self.reactors)}/{len(self.channel_members)}'))
         self.add_widget(Button(text="詳細", size_hint_x=None,
                         width=200, on_press=self.show_detail))
         self.add_widget(Button(text="リマインド", size_hint_x=None,
@@ -52,7 +53,7 @@ class ConversationElement(BoxLayout):
         text_field = TextScrollView(height=150, do_scroll_x=True)
         text_field.set_text(self.text)
         reactors_field = TextScrollView(height=150)
-        reactors_text = "リアクションした人\n"
+        reactors_text = "返信した人\n"
         for reactor in self.reactors:
             reactors_text += f'・{self.member_dict[reactor]}\n'
         reactors_field.set_text(reactors_text)
@@ -66,7 +67,7 @@ class ConversationElement(BoxLayout):
             if member not in self.reactors:
                 mention_list.append(member)
         send_response(self.client, self.channel_id,
-                      self.ts, "リアクションお願いします！", mention_list)
+                      self.ts, "返信お願いします！", mention_list)
         result.text = "リマインドを送信しました"
 
     def update_rect(self, *args):
@@ -74,7 +75,7 @@ class ConversationElement(BoxLayout):
         self.rect.size = self.size
 
 
-class RemindReactionBlock(BoxLayout):
+class RemindReplyBlock(BoxLayout):
     def __init__(self, client, channels_list, members_list) -> None:
         super().__init__()
         self.client = client
@@ -85,17 +86,13 @@ class RemindReactionBlock(BoxLayout):
         self.channel_dict = create_channel_dict(channels_list)
         self.member_dict = create_members_dict(members_list)
 
-        self.add_widget(Label(text="機能2：メッセージを検索し、リアクションがない人にリマインド", size_hint_y=None, height=50))
+        self.add_widget(Label(text="機能3：メッセージを検索し、返信がない人にリマインド", size_hint_y=None, height=50))
 
         self.input_keyword_field = InputField("キーワード", multiline=False, default_text="【集計対象】")
         self.add_widget(self.input_keyword_field)
 
-        self.select_channel_field = SelectAndActionField('チャンネル', self.channel_dict.keys(), '情報を取得', self.get_channel_information)
+        self.select_channel_field = SelectAndActionField('チャンネル', self.channel_dict.keys(), '検索', self.get_channel_information)
         self.add_widget(self.select_channel_field)
-
-        # self.button = MyButton(text='チャンネル情報を取得', on_press=self.get_members,
-        #                        height=80, width=300)
-        # self.add_widget(self.button)
 
         self.members_field = TextScrollView(height=200)
         self.add_widget(self.members_field)
@@ -108,7 +105,6 @@ class RemindReactionBlock(BoxLayout):
 
         self.result = Label()
         self.add_widget(self.result)
-
 
     def get_channel_information(self, instance):
         self.conversations_field.my_clear_widgets()
@@ -133,8 +129,9 @@ class RemindReactionBlock(BoxLayout):
             ts = conversation["ts"]
             if self.input_keyword_field.get_input() in text:
                 reactors = []
-                if 'reactions' in conversation:
-                    for reaction in conversation['reactions']:
-                        reactors += reaction['users']
+                if 'reply_users' in conversation:
+                    for reactor in conversation['reply_users']:
+                        if self.member_dict[reactor]:
+                            reactors.append(reactor)
                 self.conversations_field.my_add_widget(
                     ConversationElement(self.client, self.member_dict, channel_id, channel_members, text, ts, reactors))

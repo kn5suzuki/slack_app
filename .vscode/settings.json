@@ -1,20 +1,22 @@
 {
-"python.languageServer": "Pylance",
-"python.defaultInterpreterPath": "~/.pyenv/shims/python3",
-"cSpell.words": [
-  "boxlayout",
-  "dotenv",
-  "kivy",
-  "pipenv",
-  "pyenv",
-  "pyinstaller",
-  "screenmanager"
-],
-"python.formatting.provider": "none",
-"github.copilot.enable": {
-  "*": true,
-  "plaintext": false,
-  "markdown": false,
-  "scminput": false
-}
+  "python.defaultInterpreterPath": "~/.pyenv/shims/python3",
+  "python.analysis.extraPaths": [
+    "~/.local/share/virtualenvs/slack_app-hG_uowMH/lib/python3.10/site-packages"
+  ],
+  "cSpell.words": [
+    "boxlayout",
+    "dotenv",
+    "kivy",
+    "pipenv",
+    "pyenv",
+    "pyinstaller",
+    "screenmanager"
+  ],
+  "python.formatting.provider": "none",
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  }
 }

@@ -4,8 +4,8 @@ from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.uix.label import Label
 
-from slack_tools import get_all_channels, create_channel_dict, send_message_to_channel
-from widgets import MyDropdown, MyButton
+from slack_tools import create_channel_dict, send_message_to_channel
+from app_tools.widgets import MyDropdown, MyButton
 
 
 class SelectChannelField(BoxLayout):

@@ -11,12 +11,12 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.config import Config
 from kivy.logger import Logger, LOG_LEVELS
 
-from send_message_block import SendMessageBlock
-from remind_reaction_block import RemindReactionBlock
-from remind_reply_block import RemindReplyBlock
+from app_tools.send_message_block import SendMessageBlock
+from app_tools.remind_reaction_block import RemindReactionBlock
+from app_tools.remind_reply_block import RemindReplyBlock
 
-from slack_tools import get_all_channels, get_all_members
-from widgets import InputAndActionField, MyButton
+from slack_tools import get_active_sorted_channels, get_all_members
+from app_tools.widgets import InputAndActionField, MyButton
 
 Logger.setLevel(LOG_LEVELS["warning"])
 Config.set('kivy', 'log_level', 'warning')
@@ -95,7 +95,7 @@ class MyApp(App):
 
     def decide_token(self, instance):
         self.client = WebClient(token=self.input_token_field.get_input())
-        self.channels_list = get_all_channels(self.client)
+        self.channels_list = get_active_sorted_channels(self.client)
         self.members_list = get_all_members(self.client)
 
         self.screen_manager.add_widget(Screen1(self.client, self.channels_list, name="screen1"))
