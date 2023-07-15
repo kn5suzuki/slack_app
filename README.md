@@ -43,10 +43,14 @@ pipenv install
 
 pipenv 環境でスクリプトを実行
 
+- mac
 ```
 pipenv run python3 app.py
 ```
-
+- windows
+```
+pipenv run python app.py
+```
 ## アプリの使い方
 
 - まずは操作したい bot などのトークンを設定する
@@ -67,6 +71,12 @@ app.spec ファイルを元に pyinstaller で実行ファイルを作成
 
 dist ディレクトリに app ファイルが作成される
 
+- mac
 ```
 pipenv run pyinstaller app.spec
+```
+
+- windows
+```
+pipenv run pyinstaller app.win.spec
 ```

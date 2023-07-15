@@ -9,6 +9,7 @@ python-dotenv = "*"
 kivy = "==2.2.0rc1"
 japanize_kivy = "0.1.1"
 pyinstaller = "*"
+pillow = "*"
 
 [dev-packages]
 
