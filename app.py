@@ -14,7 +14,7 @@ from kivy.logger import Logger, LOG_LEVELS
 from app_tools.send_message_block import SendMessageBlock
 from app_tools.remind_reaction_block import RemindReactionBlock
 from app_tools.remind_reply_block import RemindReplyBlock
-
+from app_tools.count_keyword_block import CountKeywordBlock
 from slack_tools import get_active_sorted_channels, get_all_members
 from app_tools.widgets import InputAndActionField, MyButton
 
@@ -33,6 +33,8 @@ class Header(BoxLayout):
                         on_press=self.go_to_screen2))
         self.add_widget(Button(text='機能3',
                         on_press=self.go_to_screen3))
+        self.add_widget(Button(text='機能4',
+                        on_press=self.go_to_screen4))
 
     def go_to_screen1(self, *args):
         self.manager.current = 'screen1'
@@ -42,6 +44,9 @@ class Header(BoxLayout):
 
     def go_to_screen3(self, *args):
         self.manager.current = 'screen3'
+
+    def go_to_screen4(self, *args):
+        self.manager.current = 'screen4'
 
 class Top(Screen):
     def __init__(self, decide_token_field, **args):
@@ -72,6 +77,11 @@ class Screen3(Screen):
         self.add_widget(RemindReplyBlock(
             client, channels_list, members_list))
 
+class Screen4(Screen):
+    def __init__(self, client, channels_list, members_list, **args):
+        super().__init__(**args)
+        self.add_widget(CountKeywordBlock(
+            client, channels_list, members_list))
 
 class MyApp(App):
     def __init__(self) -> None:
@@ -95,14 +105,20 @@ class MyApp(App):
 
     def decide_token(self, instance):
         self.client = WebClient(token=self.input_token_field.get_input())
-        self.channels_list = get_active_sorted_channels(self.client)
-        self.members_list = get_all_members(self.client)
+        try:
+            self.channels_list = get_active_sorted_channels(self.client)
+            self.members_list = get_all_members(self.client)
+        except Exception as e:
+            self.error_field.text = f'エラー：トークンが間違っているか、APIの上限に達しています。\n{e}'
+            return
 
         self.screen_manager.add_widget(Screen1(self.client, self.channels_list, name="screen1"))
         self.screen_manager.add_widget(
             Screen2(self.client, self.channels_list, self.members_list, name="screen2"))
         self.screen_manager.add_widget(
             Screen3(self.client, self.channels_list, self.members_list, name="screen3"))
+        self.screen_manager.add_widget(
+            Screen4(self.client, self.channels_list, self.members_list, name="screen4"))
         self.screen_manager.current = 'screen1'
 
         self.wrapper.clear_widgets()

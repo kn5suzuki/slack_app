@@ -15,4 +15,4 @@ if __name__ == "__main__":
     CHANNEL_ID = os.getenv('ChannelID')
     client = WebClient(token=SLACK_API_TOKEN)
 
-    print(get_conversations_list(client, CHANNEL_ID)[0])
+    print(get_conversations_list(client, CHANNEL_ID)[-1])

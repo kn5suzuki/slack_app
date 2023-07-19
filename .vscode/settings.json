@@ -10,7 +10,8 @@
     "pipenv",
     "pyenv",
     "pyinstaller",
-    "screenmanager"
+    "screenmanager",
+    "scrollview"
   ],
   "python.formatting.provider": "none",
   "github.copilot.enable": {

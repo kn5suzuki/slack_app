@@ -99,7 +99,7 @@ class InputField(BoxLayout):
         return self.input.text
 
 class InputAndActionField(BoxLayout):
-    def __init__(self, label, text, on_press, multiline=False, default_text="", height=80) -> None:
+    def __init__(self, label, button_text, on_press, multiline=False, default_text="", height=80) -> None:
         super().__init__()
         self.orientation = 'horizontal'
         self.size_hint_y = None
@@ -109,7 +109,7 @@ class InputAndActionField(BoxLayout):
 
         self.label = Label(text=label, size_hint_x=None, width=200)
         self.input = TextInput(text=default_text, multiline=multiline)
-        self.button = Button(text=text, size_hint_y=None,
+        self.button = Button(text=button_text, size_hint_y=None,
                              size_hint_x=None, height=height, width=200, on_press=self.on_press)
 
         self.add_widget(self.label)
@@ -132,6 +132,22 @@ class SelectChannelField(BoxLayout):
 
         self.add_widget(self.label)
         self.add_widget(self.dropdown.main_button)
+
+class SelectField(BoxLayout):
+    def __init__(self, label, options) -> None:
+        super().__init__()
+        self.orientation = 'horizontal'
+        self.size_hint_y = None
+        self.height = 80
+
+        self.label = Label(text=label, size_hint_x=None, width=200)
+        self.dropdown = MyDropdown(options)
+
+        self.add_widget(self.label)
+        self.add_widget(self.dropdown.main_button)
+
+    def get_input(self):
+        return self.dropdown.get_value()
 
 class SelectAndActionField(BoxLayout):
     def __init__(self, label, options, text, on_press, height=80) -> None:

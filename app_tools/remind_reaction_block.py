@@ -4,10 +4,8 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.graphics import Rectangle, Color
 
-import threading
-
 from slack_tools import create_channel_dict, get_channel_members, get_conversations_list, create_members_dict, send_response
-from app_tools.widgets import MyDropdown, TextScrollView, WidgetScrollView, SelectAndActionField, InputField
+from app_tools.widgets import TextScrollView, WidgetScrollView, SelectAndActionField, InputField
 
 class ConversationElement(BoxLayout):
     def __init__(self, client, member_dict, channel_id, channel_members, text, ts, reactors) -> None:
@@ -118,8 +116,13 @@ class RemindReactionBlock(BoxLayout):
         except KeyError:
             self.members_field.set_text("チャンネルを選択してください")
             return -1
-        all_channel_members = get_channel_members(self.client, channel_id)
-        conversations = get_conversations_list(self.client, channel_id)
+        try:
+            all_channel_members = get_channel_members(self.client, channel_id)
+            conversations = get_conversations_list(self.client, channel_id)
+        except Exception as e:
+            self.members_field.set_text(f"検索に失敗しました\n{e}")
+            return -1
+
         channel_members = []
         members_text = ""
         for member in all_channel_members:
