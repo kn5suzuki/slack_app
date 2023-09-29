@@ -64,7 +64,6 @@ class CountKeywordBlock(BoxLayout):
             if created_date.month == target_month:
                 try:
                     channel_members[conversation["user"]] += text.count(target_word)
-                    print(conversation["user"], text, text.count(target_word))
                     replies = get_replies_list(self.client, channel_id, ts)
                     for reply in replies:
                         text = reply["text"]
